@@ -44,8 +44,8 @@ class SetWorldTimeTask extends Task {
         foreach ($worldTimes as $worldName => $time) {
             $world = $this->plugin->getServer()->getWorldManager()->getWorldByName($worldName);
             if ($world instanceof World) {
-                $world->setTime($time === "day" ? 1000 : 13000); // 1000 = Tag, 13000 = Nacht
-                $world->stopTime(); // Stoppt die Zeit, damit sie nicht weiterläuft
+                $world->setTime($time === "day" ? 1000 : 13000); 
+                $world->stopTime(); 
             }
         }
     }
