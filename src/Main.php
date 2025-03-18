@@ -38,7 +38,7 @@ class SetWorldTimeTask extends Task {
 
     public function onRun(): void {
         $worldTimes = $this->plugin->getWorldTimes();
-        $allWorldsTime = $worldTimes["$allWorlds"] ?? null;
+        $allWorldsTime = $worldTimes['$allWorlds'] ?? null; // Korrigierte Zeile
         $worldManager = $this->plugin->getServer()->getWorldManager();
 
         foreach ($worldManager->getWorlds() as $world) {
