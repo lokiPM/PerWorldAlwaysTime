@@ -7,17 +7,15 @@ namespace lokiPM\PerWorldAlwaysTime;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\World;
 use pocketmine\scheduler\Task;
-use pocketmine\utils\Config;
 
 class Main extends PluginBase {
 
-    /** @var array */
     private $worldTimes = [];
 
     public function onEnable(): void {
         $this->saveDefaultConfig();
         $this->loadWorldTimes();
-        $this->getScheduler()->scheduleRepeatingTask(new SetWorldTimeTask($this), 20); // Alle 20 Ticks (1 Sekunde)
+        $this->getScheduler()->scheduleRepeatingTask(new SetWorldTimeTask($this), 20);
     }
 
     private function loadWorldTimes(): void {
@@ -32,7 +30,6 @@ class Main extends PluginBase {
 
 class SetWorldTimeTask extends Task {
 
-    /** @var Main */
     private $plugin;
 
     public function __construct(Main $plugin) {
@@ -41,11 +38,16 @@ class SetWorldTimeTask extends Task {
 
     public function onRun(): void {
         $worldTimes = $this->plugin->getWorldTimes();
-        foreach ($worldTimes as $worldName => $time) {
-            $world = $this->plugin->getServer()->getWorldManager()->getWorldByName($worldName);
-            if ($world instanceof World) {
-                $world->setTime($time === "day" ? 1000 : 13000); 
-                $world->stopTime(); 
+        $allWorldsTime = $worldTimes["$allWorlds"] ?? null;
+        $worldManager = $this->plugin->getServer()->getWorldManager();
+
+        foreach ($worldManager->getWorlds() as $world) {
+            $worldName = $world->getFolderName();
+            $time = $worldTimes[$worldName] ?? $allWorldsTime;
+
+            if ($time !== null) {
+                $world->setTime($time === "day" ? 1000 : 13000);
+                $world->stopTime();
             }
         }
     }
