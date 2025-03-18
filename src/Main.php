@@ -46,7 +46,7 @@ class SetWorldTimeTask extends Task {
             $time = $worldTimes[$worldName] ?? $allWorldsTime;
 
             if ($time !== null) {
-                $world->setTime($time === "day" ? 1000 : 13000);
+                $world->setTime($time === "day" ? 1000 : 18000);
                 $world->stopTime();
             }
         }
